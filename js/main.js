@@ -1,20 +1,16 @@
 var GameState = {
 
 	// phase: start game
-	init: function() {
+	init: function(currentLevel) {
 
 		// set the screen to be responsive
 		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.scale.pageAlignHorizontally = true;
 		this.scale.pageAlignVertically = true;
 
-		// set value for each elements (this will be loaded from JSON file in the future)
-		this.value = {
-			fire: 3,
-			water: 2,
-			earth: 5,
-			air: 4
-		};
+		// get the current level
+		this.currentLevel = currentLevel ? currentLevel : 1;
+		console.log('level: ' + this.currentLevel);
 
 	},
 
@@ -27,6 +23,11 @@ var GameState = {
 		this.load.image('earth', 'assets/images/earth.png');
 		this.load.image('air', 'assets/images/air.png');
 		this.load.image('submitButton', 'assets/images/submitButton.png');
+
+		// load level data
+		this.load.text('level1', 'assets/data/level1.json');
+		this.load.text('level2', 'assets/data/level2.json');
+		this.load.text('level3', 'assets/data/level3.json');
 	},
 
 	// phaser: run after init and preload
@@ -34,6 +35,23 @@ var GameState = {
 
 		// set background color
 		this.stage.backgroundColor = "#fff";
+
+		// parse level data
+		this.levelData = JSON.parse(this.game.cache.getText('level' + this.currentLevel));
+
+		// print current level
+		this.levelText = this.game.add.text(this.game.world.centerX, 30, 'Level: ' + this.currentLevel);
+		this.levelText.anchor.setTo(0.5);
+
+		// print element value
+		this.fireText = this.game.add.text(this.game.world.width * 0.2, 60, 'Fire = ' + this.levelData['fire']);
+		this.waterText = this.game.add.text(this.game.world.width * 0.4, 60, 'Water = ' + this.levelData['water']);
+		this.earthText = this.game.add.text(this.game.world.width * 0.6, 60, 'Earth = ' + this.levelData['earth']);
+		this.airText = this.game.add.text(this.game.world.width * 0.8, 60, 'Air = ' + this.levelData['air']);
+
+		// print answer
+		this.answerText = this.game.add.text(this.game.world.centerX + 100, this.game.world.centerY, '= ' + this.levelData['answer']);
+		this.answerText.anchor.setTo(0.5);
 
 		/*
 		 * show element buttons for fire, water, earth and air
@@ -54,14 +72,14 @@ var GameState = {
 		this.fire.events.onInputDown.add(this.clickElement, this);
 
 		// water
-		this.water = this.game.add.sprite(this.game.world.centerX - 25, this.game.world.centerY + 25, 'water');
+		this.water = this.game.add.sprite(this.game.world.centerX + 25, this.game.world.centerY - 25, 'water');
 		this.water.anchor.setTo(0.5);
 		this.water.alpha = 0.4;
 		this.water.inputEnabled = true;
 		this.water.events.onInputDown.add(this.clickElement, this);
 		
 		// earth
-		this.earth = this.game.add.sprite(this.game.world.centerX + 25, this.game.world.centerY - 25, 'earth');
+		this.earth = this.game.add.sprite(this.game.world.centerX - 25, this.game.world.centerY + 25, 'earth');
 		this.earth.anchor.setTo(0.5);
 		this.earth.alpha = 0.4;
 		this.earth.inputEnabled = true;
@@ -121,16 +139,62 @@ var GameState = {
 
 	submit: function() {
 		
-		/*
-		 * you will get the data:
-		 * - element name = element.key
-		 * - element value = this.value[element.key]
-		 * see the example below
-		 */
+		// calculate and check the answer
+		if (this.calculate() == this.levelData.answer) {
+
+			// add level
+			this.currentLevel += 1;
+
+			// move to the next level
+			this.state.start('GameState', true, false, this.currentLevel);
+
+		} else {
+			// go back to level 1
+			alert('you lost');
+			this.state.start('GameState');
+		}
+	},
+
+	calculate: function() {
+
+		// create variable to store selected elements
+		var fire = 0;
+		var water = 0;
+		var earth = 0;
+		var air = 0;
+
+		// find which elements are selected
 		this.selectedElement.forEach(function(element) {
-			console.log(element.key + ": " + this.value[element.key]);
+			if (element.key == 'fire') {
+				fire = 1;
+			} else if (element.key == 'water') {
+				water = 1;
+			} else if (element.key == 'earth') {
+				earth = 1;
+			} else if (element.key == 'air') {
+				air = 1;
+			}
 		}, this);
-	}
+
+		// do calculation based on each scenario
+		if (fire == 1) {
+			if (water == 1) {
+				return (this.levelData['fire'] - this.levelData['water']);
+			} else if (earth == 1) {
+				return (Math.pow(this.levelData['fire'], this.levelData['earth']));
+			} else if (air == 1) {
+				return (this.levelData['fire'] * this.levelData['air']);
+			}
+		} else if (water == 1) {
+			if (earth == 1) {
+				return (this.levelData['water'] / this.levelData['earth']);
+			} else if (air == 1) {
+				return (0);
+			}
+		} else if (earth == 1 && air == 1) {
+			return (this.levelData['earth'] + this.levelData['air']);
+		}
+	},
 
 }
 
