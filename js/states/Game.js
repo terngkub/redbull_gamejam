@@ -17,7 +17,6 @@ Elematix.GameState = {
 
 		// parse level data
 		this.levelData = JSON.parse(this.game.cache.getText('level' + this.currentLevel));
-		console.log(this.levelData);
 
 		// print current level
 		var levelStyle = {font: '40px Arial', align: 'right'}

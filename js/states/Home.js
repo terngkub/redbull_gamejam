@@ -3,7 +3,9 @@ var Elematix = Elematix || {};
 Elematix.HomeState = {
 	
 	init: function(level, score) {
-		if (level && level == 5) {
+		// cleared game
+		this.LEVEL_NUMBER = 20
+		if (level && level > this.LEVEL_NUMBER) {
 			console.log("come here");
 			this.level = level;
 			this.titleMessage = 'Score: ' + score;

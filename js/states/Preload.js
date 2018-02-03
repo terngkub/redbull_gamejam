@@ -12,7 +12,7 @@ Elematix.PreloadState = {
 		this.load.image('submitButton', 'assets/images/submitButton.png');
 
 		// load level data
-		var LEVEL_NUMBER = 4;
+		var LEVEL_NUMBER = 20;
 		for (var i = 1; i <= LEVEL_NUMBER; i++) {
 			this.load.text('level' + i, 'assets/data/level' + i + '.json');
 		}

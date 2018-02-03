@@ -19,10 +19,12 @@ Elematix.ChangeLevelState = {
 	},
 
 	backToGame: function() {
-		if (this.currentLevel != 5) {
-			this.state.start('Game', true, false, this.currentLevel, this.currentScore);
-		} else {
+		// cleared game
+		this.LEVEL_NUMBER = 20;
+		if (this.currentLevel > this.LEVEL_NUMBER) {
 			this.state.start('Home', true, false, this.currentLevel, this.currentScore);
+		} else {
+			this.state.start('Game', true, false, this.currentLevel, this.currentScore);
 		}
 	}
 };
