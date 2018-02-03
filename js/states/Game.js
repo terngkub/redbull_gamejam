@@ -52,42 +52,37 @@ Elematix.GameState = {
 		// add rule
 		this.RULE_MARGIN = 45;
 		this.ruleData = [
-			{key: 'fire', x: 107 - this.RULE_MARGIN, y: 640},
-			{key: 'water', x: 107 + this.RULE_MARGIN, y: 640},
-			{key: 'fire', x: 320 - this.RULE_MARGIN, y: 640},
-			{key: 'earth', x: 320 + this.RULE_MARGIN, y: 640},
-			{key: 'fire', x: 533 - this.RULE_MARGIN, y: 640},
-			{key: 'air', x: 533 + this.RULE_MARGIN, y: 640},
-			{key: 'water', x: 107 - this.RULE_MARGIN, y: 720},
-			{key: 'earth', x: 107 + this.RULE_MARGIN, y: 720},
-			{key: 'water', x: 320 - this.RULE_MARGIN, y: 720},
-			{key: 'air', x: 320 + this.RULE_MARGIN, y: 720},
-			{key: 'earth', x: 533 - this.RULE_MARGIN, y: 720},
-			{key: 'air', x: 533 + this.RULE_MARGIN, y: 720}
+			{element1: 'fire', element2: 'water', operator: '-', x: 107, y: 640},
+			{element1: 'fire', element2: 'earth', operator: 'x', x: 320, y: 640},
+			{element1: 'fire', element2: 'air', operator: '^', x: 533, y: 640},
+			{element1: 'water', element2: 'earth', operator: '%', x: 107, y: 720},
+			{element1: 'water', element2: 'air', operator: '/', x: 320, y: 720},
+			{element1: 'earth', element2: 'air', operator: '+', x: 533, y: 720}
 		];
 		this.rules = this.game.add.group();
 		this.ruleData.forEach(function(element) {
-			var rule = this.rules.create(element.x, element.y, element.key);
-			rule.width = 50;
-			rule.height = 50;
-			rule.anchor.setTo(0.5);
+
+			// hide 3 rules for level 1 and 2
+			if (this.currentLevel > 2 || element.y == 640) {
+
+				// left element
+				var element1 = this.rules.create(element.x - this.RULE_MARGIN, element.y, element.element1);
+				element1.width = 50;
+				element1.height = 50;
+				element1.anchor.setTo(0.5);
+
+				// right element
+				var element2 = this.rules.create(element.x + this.RULE_MARGIN, element.y, element.element2);
+				element2.width = 50;
+				element2.height = 50;
+				element2.anchor.setTo(0.5);
+
+				// operator
+				var ruleOperatorStyle = {font: '40px Arial'};
+				var operator = this.game.add.text(element.x, element.y, element.operator, ruleOperatorStyle);
+				operator.anchor.setTo(0.5);
+			}
 		}, this);
-
-		// add rule's operator
-		var ruleOperatorStyle = {font: '40px Arial'}
-		this.subtract = this.game.add.text(107, 640, '-', ruleOperatorStyle);
-		this.subtract.anchor.setTo(0.5);
-		this.multiply = this.game.add.text(320, 640, 'x', ruleOperatorStyle);
-		this.multiply.anchor.setTo(0.5);
-		this.power = this.game.add.text(533, 640, '^', ruleOperatorStyle);
-		this.power.anchor.setTo(0.5);
-		this.modulo = this.game.add.text(107, 720, '%', ruleOperatorStyle);
-		this.modulo.anchor.setTo(0.5);
-		this.divide = this.game.add.text(320, 720, '/', ruleOperatorStyle);
-		this.divide.anchor.setTo(0.5);
-		this.plus = this.game.add.text(533, 720, '+', ruleOperatorStyle);
-		this.plus.anchor.setTo(0.5);
-
 
 		/*
 		 * show element buttons for fire, water, earth and air
