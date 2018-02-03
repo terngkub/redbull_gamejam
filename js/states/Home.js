@@ -2,18 +2,12 @@ var Elematix = Elematix || {};
 
 Elematix.HomeState = {
 	
-	init: function(level) {
-		console.log(level);
+	init: function(level, score) {
 		if (level && level == 4) {
 			console.log("come here");
 			this.level = level;
-			this.titleMessage = 'Great Job !!!';
-			this.subtitleMessage = 'You completed them all.';
-			this.instructionMessage = 'TOUCH TO PLAY AGAIN';
-		} else if (level) {
-			this.level = level;
-			this.titleMessage = 'Game Over';
-			this.subtitleMessage = 'You reached level ' + level + '.';
+			this.titleMessage = 'Score: ' + score;
+			this.subtitleMessage = 'Great job, you cleared the game !!!\nPlay again to get better score.';
 			this.instructionMessage = 'TOUCH TO PLAY AGAIN';
 		} else {
 			this.titleMessage = 'Elematix';

@@ -28,8 +28,7 @@ Elematix.GameState = {
 		this.scoreText.anchor.setTo(1, 0.5);
 
 		// show time
-		console.log(this.levelData['time']);
-		this.timeText = this.game.add.text(this.game.world.centerX, 60, this.levelData.time);
+		this.timeText = this.game.add.text(this.game.world.centerX, 60, this.levelData['time']);
 		this.timeText.anchor.setTo(0.5);
 		this.game.time.events.loop(Phaser.Timer.SECOND, this.showTime, this);
 
@@ -190,17 +189,29 @@ Elematix.GameState = {
 	submit: function() {
 		
 		// calculate and check the answer
-		if (this.calculate() == this.levelData.answer && this.currentLevel != 4) {
-			
-			// add level
-			this.currentLevel += 1;
+		if (this.calculate() == this.levelData.answer) {
 
-			// move to the next level
-			this.state.start('Game', true, false, this.currentLevel);
+			// cleared game
+			if (this.currentLevel == 4) {
+				this.state.start('Home', true, false, this.currentLevel, this.currentScore);
+			} else {
+
+				// add score
+				this.currentScore += this.levelData['time'];;
+
+				// add level
+				this.currentLevel += 1;
+
+				// run game at currentLevel
+				this.state.start('Game', true, false, this.currentLevel, this.currentScore);
+			}
 
 		} else {
-			// go back to level 1
-			this.state.start('Home', true, false, this.currentLevel);
+			// reduce the score
+			this.currentScore -= 15;
+
+			// run game at currentLevel
+			this.state.start('Game', true, false, this.currentLevel, this.currentScore);
 		}
 	},
 
