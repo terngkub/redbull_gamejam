@@ -25,13 +25,14 @@ Elematix.GameState = {
 		this.levelText.anchor.setTo(1);
 
 		// print element value
-		this.fireText = this.game.add.text(this.game.world.width * 0.2, 60, 'Fire = ' + this.levelData['fire']);
-		this.waterText = this.game.add.text(this.game.world.width * 0.4, 60, 'Water = ' + this.levelData['water']);
-		this.earthText = this.game.add.text(this.game.world.width * 0.6, 60, 'Earth = ' + this.levelData['earth']);
-		this.airText = this.game.add.text(this.game.world.width * 0.8, 60, 'Air = ' + this.levelData['air']);
+		this.fireText = this.game.add.text(this.game.world.width * 0.39, 250, this.levelData['fire']);
+		this.waterText = this.game.add.text(this.game.world.width * 0.58, 250, this.levelData['water']);
+		this.earthText = this.game.add.text(this.game.world.width * 0.39, 405, this.levelData['earth']);
+		this.airText = this.game.add.text(this.game.world.width * 0.60, 405, this.levelData['air']);
 
 		// print answer
-		this.answerText = this.game.add.text(this.game.world.centerX + 100, this.game.world.centerY, '= ' + this.levelData['answer']);
+		var answerStyle = {font: '45px Arial'}
+		this.answerText = this.game.add.text(this.game.world.centerX + 100, this.game.world.centerY, ' =  ' + this.levelData['answer'], answerStyle);
 		this.answerText.anchor.setTo(0.5);
 
 		// add instruction
@@ -100,7 +101,7 @@ Elematix.GameState = {
 		this.fire.events.onInputDown.add(this.clickElement, this);
 
 		// water
-		this.water = this.game.add.sprite(this.game.world.centerX + 60, this.game.world.centerY - 200, 'water');
+		this.water = this.game.add.sprite(this.game.world.centerX + 70, this.game.world.centerY - 200, 'water');
 		this.water.width = 100;
 		this.water.height = 100;
 		this.water.anchor.setTo(0.5);
@@ -109,7 +110,7 @@ Elematix.GameState = {
 		this.water.events.onInputDown.add(this.clickElement, this);
 		
 		// earth
-		this.earth = this.game.add.sprite(this.game.world.centerX - 60, this.game.world.centerY - 30, 'earth');
+		this.earth = this.game.add.sprite(this.game.world.centerX - 60, this.game.world.centerY - 45, 'earth');
 		this.earth.width = 100;
 		this.earth.height = 100;
 		this.earth.anchor.setTo(0.5);
@@ -118,7 +119,7 @@ Elematix.GameState = {
 		this.earth.events.onInputDown.add(this.clickElement, this);
 
 		// air
-		this.air = this.game.add.sprite(this.game.world.centerX + 60, this.game.world.centerY - 30, 'air');
+		this.air = this.game.add.sprite(this.game.world.centerX + 70, this.game.world.centerY - 45, 'air');
 		this.air.width = 100;
 		this.air.height = 100;
 		this.air.anchor.setTo(0.5);
@@ -130,7 +131,7 @@ Elematix.GameState = {
 		this.selectedElement = [];
 
 		// submit button
-		this.submitButton = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY + 100, 'submitButton');
+		this.submitButton = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY + 90, 'submitButton');
 		this.submitButton.anchor.setTo(0.5);
 		this.submitButton.alpha = 0.4;
 		this.submitButton.events.onInputDown.add(this.submit, this);
