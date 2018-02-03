@@ -1,7 +1,7 @@
 var Elematix = Elematix || {};
 
 // create game object
-var game = new Phaser.Game(640, 360, Phaser.AUTO);
+var game = new Phaser.Game(640, 800, Phaser.AUTO);
 
 // add states
 game.state.add('Boot', Elematix.BootState);

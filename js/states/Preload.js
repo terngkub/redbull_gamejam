@@ -12,13 +12,13 @@ Elematix.PreloadState = {
 		this.load.image('submitButton', 'assets/images/submitButton.png');
 
 		// load level data
-		this.load.text('level1', 'assets/data/level1.json');
-		this.load.text('level2', 'assets/data/level2.json');
-		this.load.text('level3', 'assets/data/level3.json');
+		var LEVEL_NUMBER = 4;
+		for (var i = 1; i <= LEVEL_NUMBER; i++) {
+			this.load.text('level' + i, 'assets/data/level' + i + '.json');
+		}
 	},
 
 	create: function() {
-		console.log("go home");
 		this.state.start('Home');
 	}
 

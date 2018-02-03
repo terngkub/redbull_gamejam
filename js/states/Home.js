@@ -4,7 +4,13 @@ Elematix.HomeState = {
 	
 	init: function(level) {
 		console.log(level);
-		if (level) {
+		if (level && level == 4) {
+			console.log("come here");
+			this.level = level;
+			this.titleMessage = 'Great Job !!!';
+			this.subtitleMessage = 'You completed them all.';
+			this.instructionMessage = 'TOUCH TO PLAY AGAIN';
+		} else if (level) {
 			this.level = level;
 			this.titleMessage = 'Game Over';
 			this.subtitleMessage = 'You reached level ' + level + '.';

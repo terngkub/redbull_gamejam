@@ -17,6 +17,7 @@ Elematix.GameState = {
 
 		// parse level data
 		this.levelData = JSON.parse(this.game.cache.getText('level' + this.currentLevel));
+		console.log(this.levelData);
 
 		// print current level
 		this.levelText = this.game.add.text(this.game.world.centerX, 30, 'Level: ' + this.currentLevel);
@@ -119,8 +120,8 @@ Elematix.GameState = {
 	submit: function() {
 		
 		// calculate and check the answer
-		if (this.calculate() == this.levelData.answer) {
-
+		if (this.calculate() == this.levelData.answer && this.currentLevel != 4) {
+			
 			// add level
 			this.currentLevel += 1;
 
@@ -159,15 +160,15 @@ Elematix.GameState = {
 			if (water == 1) {
 				return (this.levelData['fire'] - this.levelData['water']);
 			} else if (earth == 1) {
-				return (Math.pow(this.levelData['fire'], this.levelData['earth']));
+				return (this.levelData['fire'] * this.levelData['earth']);
 			} else if (air == 1) {
-				return (this.levelData['fire'] * this.levelData['air']);
+				return (Math.pow(this.levelData['fire'], this.levelData['air']));
 			}
 		} else if (water == 1) {
 			if (earth == 1) {
-				return (this.levelData['water'] / this.levelData['earth']);
+				return (this.levelData['water'] % this.levelData['earth']);
 			} else if (air == 1) {
-				return (0);
+				return (this.levelData['water'] / this.levelData['air']);
 			}
 		} else if (earth == 1 && air == 1) {
 			return (this.levelData['earth'] + this.levelData['air']);
