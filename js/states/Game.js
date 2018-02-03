@@ -35,10 +35,49 @@ Elematix.GameState = {
 		this.answerText.anchor.setTo(0.5);
 
 		// add instruction
-		/*
-		this.instruction1 = this.game.add.text(x, y, '');
-		this.instruction2 = this.game.add.text(x, y, '');
-		*/
+		var instructionStyle = {font: '22px Arial', align: 'center'};
+		this.instruction = this.game.add.text(this.game.world.centerX, 560, 'Select 2 elements to get the number on the right.\nWatch out for the combination rules below!');
+		this.instruction.anchor.setTo(0.5);
+
+		// add rule
+		this.RULE_MARGIN = 45;
+		this.ruleData = [
+			{key: 'fire', x: 107 - this.RULE_MARGIN, y: 640},
+			{key: 'water', x: 107 + this.RULE_MARGIN, y: 640},
+			{key: 'fire', x: 320 - this.RULE_MARGIN, y: 640},
+			{key: 'earth', x: 320 + this.RULE_MARGIN, y: 640},
+			{key: 'fire', x: 533 - this.RULE_MARGIN, y: 640},
+			{key: 'air', x: 533 + this.RULE_MARGIN, y: 640},
+			{key: 'water', x: 107 - this.RULE_MARGIN, y: 720},
+			{key: 'earth', x: 107 + this.RULE_MARGIN, y: 720},
+			{key: 'water', x: 320 - this.RULE_MARGIN, y: 720},
+			{key: 'air', x: 320 + this.RULE_MARGIN, y: 720},
+			{key: 'earth', x: 533 - this.RULE_MARGIN, y: 720},
+			{key: 'air', x: 533 + this.RULE_MARGIN, y: 720}
+		];
+		this.rules = this.game.add.group();
+		this.ruleData.forEach(function(element) {
+			var rule = this.rules.create(element.x, element.y, element.key);
+			rule.width = 50;
+			rule.height = 50;
+			rule.anchor.setTo(0.5);
+		}, this);
+
+		// add rule's operator
+		var ruleOperatorStyle = {font: '30px Arial'}
+		this.subtract = this.game.add.text(107, 640, '-', ruleOperatorStyle);
+		this.subtract.anchor.setTo(0.5);
+		this.multiply = this.game.add.text(320, 640, '*', ruleOperatorStyle);
+		this.multiply.anchor.setTo(0.5);
+		this.power = this.game.add.text(533, 640, '^', ruleOperatorStyle);
+		this.power.anchor.setTo(0.5);
+		this.modulo = this.game.add.text(107, 720, '%', ruleOperatorStyle);
+		this.modulo.anchor.setTo(0.5);
+		this.divide = this.game.add.text(320, 720, '/', ruleOperatorStyle);
+		this.divide.anchor.setTo(0.5);
+		this.plus = this.game.add.text(533, 720, '+', ruleOperatorStyle);
+		this.plus.anchor.setTo(0.5);
+
 
 		/*
 		 * show element buttons for fire, water, earth and air
@@ -52,7 +91,7 @@ Elematix.GameState = {
 		 */
 
 		// fire
-		this.fire = this.game.add.sprite(this.game.world.centerX - 60, this.game.world.centerY - 60, 'fire');
+		this.fire = this.game.add.sprite(this.game.world.centerX - 60, this.game.world.centerY - 200, 'fire');
 		this.fire.width = 100;
 		this.fire.height = 100;
 		this.fire.anchor.setTo(0.5);
@@ -61,7 +100,7 @@ Elematix.GameState = {
 		this.fire.events.onInputDown.add(this.clickElement, this);
 
 		// water
-		this.water = this.game.add.sprite(this.game.world.centerX + 60, this.game.world.centerY - 60, 'water');
+		this.water = this.game.add.sprite(this.game.world.centerX + 60, this.game.world.centerY - 200, 'water');
 		this.water.width = 100;
 		this.water.height = 100;
 		this.water.anchor.setTo(0.5);
@@ -70,7 +109,7 @@ Elematix.GameState = {
 		this.water.events.onInputDown.add(this.clickElement, this);
 		
 		// earth
-		this.earth = this.game.add.sprite(this.game.world.centerX - 60, this.game.world.centerY + 60, 'earth');
+		this.earth = this.game.add.sprite(this.game.world.centerX - 60, this.game.world.centerY - 30, 'earth');
 		this.earth.width = 100;
 		this.earth.height = 100;
 		this.earth.anchor.setTo(0.5);
@@ -79,7 +118,7 @@ Elematix.GameState = {
 		this.earth.events.onInputDown.add(this.clickElement, this);
 
 		// air
-		this.air = this.game.add.sprite(this.game.world.centerX + 60, this.game.world.centerY + 60, 'air');
+		this.air = this.game.add.sprite(this.game.world.centerX + 60, this.game.world.centerY - 30, 'air');
 		this.air.width = 100;
 		this.air.height = 100;
 		this.air.anchor.setTo(0.5);
