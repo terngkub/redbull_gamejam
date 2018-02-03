@@ -2,12 +2,11 @@ var Elematix = Elematix || {};
 
 Elematix.GameState = {
 
-	init: function(currentLevel) {
+	init: function(currentLevel, currentScore) {
 
-		// get the current level
+		// get the current level and score
 		this.currentLevel = currentLevel ? currentLevel : 1;
-		console.log('level: ' + this.currentLevel);
-
+		this.currentScore = currentScore ? currentScore : 0;
 	},
 
 	create: function() {
@@ -21,8 +20,18 @@ Elematix.GameState = {
 
 		// print current level
 		var levelStyle = {font: '40px Arial', align: 'right'}
-		this.levelText = this.game.add.text(this.game.world.width - 40, 80, 'Level: ' + this.currentLevel, levelStyle);
-		this.levelText.anchor.setTo(1);
+		this.levelText = this.game.add.text(40, 60, 'Level: ' + this.currentLevel, levelStyle);
+		this.levelText.anchor.setTo(0, 0.5);
+
+		// print current score
+		this.scoreText = this.game.add.text(this.game.world.width - 40, 60, 'Score: ' + this.currentScore, levelStyle);
+		this.scoreText.anchor.setTo(1, 0.5);
+
+		// show time
+		console.log(this.levelData['time']);
+		this.timeText = this.game.add.text(this.game.world.centerX, 60, this.levelData.time);
+		this.timeText.anchor.setTo(0.5);
+		this.game.time.events.loop(Phaser.Timer.SECOND, this.showTime, this);
 
 		// print element value
 		this.fireText = this.game.add.text(this.game.world.width * 0.2, 60, 'Fire = ' + this.levelData['fire']);
@@ -77,7 +86,6 @@ Elematix.GameState = {
 		this.divide.anchor.setTo(0.5);
 		this.plus = this.game.add.text(533, 720, '+', ruleOperatorStyle);
 		this.plus.anchor.setTo(0.5);
-
 
 		/*
 		 * show element buttons for fire, water, earth and air
@@ -139,6 +147,13 @@ Elematix.GameState = {
 	// phaser: run many time throughout the game
 	update: function() {
 		
+	},
+
+	showTime: function() {
+		if (this.levelData.time > 0) {
+			this.levelData.time--;
+			this.timeText.setText(this.levelData.time);
+		}
 	},
 
 	clickElement: function(element) {
