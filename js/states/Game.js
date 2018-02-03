@@ -20,8 +20,9 @@ Elematix.GameState = {
 		console.log(this.levelData);
 
 		// print current level
-		this.levelText = this.game.add.text(this.game.world.centerX, 30, 'Level: ' + this.currentLevel);
-		this.levelText.anchor.setTo(0.5);
+		var levelStyle = {font: '40px Arial', align: 'right'}
+		this.levelText = this.game.add.text(this.game.world.width - 40, 80, 'Level: ' + this.currentLevel, levelStyle);
+		this.levelText.anchor.setTo(1);
 
 		// print element value
 		this.fireText = this.game.add.text(this.game.world.width * 0.2, 60, 'Fire = ' + this.levelData['fire']);
@@ -32,6 +33,12 @@ Elematix.GameState = {
 		// print answer
 		this.answerText = this.game.add.text(this.game.world.centerX + 100, this.game.world.centerY, '= ' + this.levelData['answer']);
 		this.answerText.anchor.setTo(0.5);
+
+		// add instruction
+		/*
+		this.instruction1 = this.game.add.text(x, y, '');
+		this.instruction2 = this.game.add.text(x, y, '');
+		*/
 
 		/*
 		 * show element buttons for fire, water, earth and air
@@ -45,28 +52,36 @@ Elematix.GameState = {
 		 */
 
 		// fire
-		this.fire = this.game.add.sprite(this.game.world.centerX - 25, this.game.world.centerY - 25, 'fire');
+		this.fire = this.game.add.sprite(this.game.world.centerX - 60, this.game.world.centerY - 60, 'fire');
+		this.fire.width = 100;
+		this.fire.height = 100;
 		this.fire.anchor.setTo(0.5);
 		this.fire.alpha = 0.4;
 		this.fire.inputEnabled = true;
 		this.fire.events.onInputDown.add(this.clickElement, this);
 
 		// water
-		this.water = this.game.add.sprite(this.game.world.centerX + 25, this.game.world.centerY - 25, 'water');
+		this.water = this.game.add.sprite(this.game.world.centerX + 60, this.game.world.centerY - 60, 'water');
+		this.water.width = 100;
+		this.water.height = 100;
 		this.water.anchor.setTo(0.5);
 		this.water.alpha = 0.4;
 		this.water.inputEnabled = true;
 		this.water.events.onInputDown.add(this.clickElement, this);
 		
 		// earth
-		this.earth = this.game.add.sprite(this.game.world.centerX - 25, this.game.world.centerY + 25, 'earth');
+		this.earth = this.game.add.sprite(this.game.world.centerX - 60, this.game.world.centerY + 60, 'earth');
+		this.earth.width = 100;
+		this.earth.height = 100;
 		this.earth.anchor.setTo(0.5);
 		this.earth.alpha = 0.4;
 		this.earth.inputEnabled = true;
 		this.earth.events.onInputDown.add(this.clickElement, this);
 
 		// air
-		this.air = this.game.add.sprite(this.game.world.centerX + 25, this.game.world.centerY + 25, 'air');
+		this.air = this.game.add.sprite(this.game.world.centerX + 60, this.game.world.centerY + 60, 'air');
+		this.air.width = 100;
+		this.air.height = 100;
 		this.air.anchor.setTo(0.5);
 		this.air.alpha = 0.4;
 		this.air.inputEnabled = true;
