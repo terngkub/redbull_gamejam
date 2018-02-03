@@ -187,27 +187,21 @@ Elematix.GameState = {
 		// calculate and check the answer
 		if (this.calculate() == this.levelData.answer) {
 
-			// cleared game
-			if (this.currentLevel == 4) {
-				this.state.start('Home', true, false, this.currentLevel, this.currentScore);
-			} else {
+			// add score
+			this.currentScore += this.levelData['time'];;
 
-				// add score
-				this.currentScore += this.levelData['time'];;
+			// add level
+			this.currentLevel += 1;
 
-				// add level
-				this.currentLevel += 1;
-
-				// run game at currentLevel
-				this.state.start('Game', true, false, this.currentLevel, this.currentScore);
-			}
+			// run game at currentLevel
+			this.state.start('ChangeLevel', true, false, this.currentLevel, this.currentScore, 1);
 
 		} else {
 			// reduce the score
 			this.currentScore -= 15;
 
 			// run game at currentLevel
-			this.state.start('Game', true, false, this.currentLevel, this.currentScore);
+			this.state.start('ChangeLevel', true, false, this.currentLevel, this.currentScore, 0);
 		}
 	},
 

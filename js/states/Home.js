@@ -3,7 +3,7 @@ var Elematix = Elematix || {};
 Elematix.HomeState = {
 	
 	init: function(level, score) {
-		if (level && level == 4) {
+		if (level && level == 5) {
 			console.log("come here");
 			this.level = level;
 			this.titleMessage = 'Score: ' + score;
@@ -33,7 +33,7 @@ Elematix.HomeState = {
 
 		// instruction
 		var instructionStyle = {font: '24px Arial'};
-		this.instructionText = this.game.add.text(this.game.world.centerX, 300, this.instructionMessage, instructionStyle);
+		this.instructionText = this.game.add.text(this.game.world.centerX, 700, this.instructionMessage, instructionStyle);
 		this.instructionText.anchor.setTo(0.5);
 
 		// go to game when click
