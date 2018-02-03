@@ -25,19 +25,19 @@ Elematix.GameState = {
 		this.levelText.anchor.setTo(1);
 
 		// print element value
-		this.fireText = this.game.add.text(this.game.world.width * 0.39, 250, this.levelData['fire']);
-		this.waterText = this.game.add.text(this.game.world.width * 0.58, 250, this.levelData['water']);
-		this.earthText = this.game.add.text(this.game.world.width * 0.39, 405, this.levelData['earth']);
-		this.airText = this.game.add.text(this.game.world.width * 0.60, 405, this.levelData['air']);
+		this.fireText = this.game.add.text(this.game.world.width * 0.36, 250, this.levelData['fire']);
+		this.waterText = this.game.add.text(this.game.world.width * 0.55, 250, this.levelData['water']);
+		this.earthText = this.game.add.text(this.game.world.width * 0.36, 405, this.levelData['earth']);
+		this.airText = this.game.add.text(this.game.world.width * 0.57, 405, this.levelData['air']);
 
 		// print answer
 		var answerStyle = {font: '45px Arial'}
-		this.answerText = this.game.add.text(this.game.world.centerX + 100, this.game.world.centerY, ' =  ' + this.levelData['answer'], answerStyle);
+		this.answerText = this.game.add.text(this.game.world.centerX + 180, this.game.world.centerY - 95, '=  ' + this.levelData['answer'], answerStyle);
 		this.answerText.anchor.setTo(0.5);
 
 		// add instruction
 		var instructionStyle = {font: '22px Arial', align: 'center'};
-		this.instruction = this.game.add.text(this.game.world.centerX, 560, 'Select 2 elements to get the number on the right.\nWatch out for the combination rules below!');
+		this.instruction = this.game.add.text(this.game.world.centerX, 580, 'Rules');
 		this.instruction.anchor.setTo(0.5);
 
 		// add rule
@@ -65,10 +65,10 @@ Elematix.GameState = {
 		}, this);
 
 		// add rule's operator
-		var ruleOperatorStyle = {font: '30px Arial'}
+		var ruleOperatorStyle = {font: '40px Arial'}
 		this.subtract = this.game.add.text(107, 640, '-', ruleOperatorStyle);
 		this.subtract.anchor.setTo(0.5);
-		this.multiply = this.game.add.text(320, 640, '*', ruleOperatorStyle);
+		this.multiply = this.game.add.text(320, 640, 'x', ruleOperatorStyle);
 		this.multiply.anchor.setTo(0.5);
 		this.power = this.game.add.text(533, 640, '^', ruleOperatorStyle);
 		this.power.anchor.setTo(0.5);
@@ -92,7 +92,7 @@ Elematix.GameState = {
 		 */
 
 		// fire
-		this.fire = this.game.add.sprite(this.game.world.centerX - 60, this.game.world.centerY - 200, 'fire');
+		this.fire = this.game.add.sprite(this.game.world.centerX - 80, this.game.world.centerY - 200, 'fire');
 		this.fire.width = 100;
 		this.fire.height = 100;
 		this.fire.anchor.setTo(0.5);
@@ -101,7 +101,7 @@ Elematix.GameState = {
 		this.fire.events.onInputDown.add(this.clickElement, this);
 
 		// water
-		this.water = this.game.add.sprite(this.game.world.centerX + 70, this.game.world.centerY - 200, 'water');
+		this.water = this.game.add.sprite(this.game.world.centerX + 50, this.game.world.centerY - 200, 'water');
 		this.water.width = 100;
 		this.water.height = 100;
 		this.water.anchor.setTo(0.5);
@@ -110,7 +110,7 @@ Elematix.GameState = {
 		this.water.events.onInputDown.add(this.clickElement, this);
 		
 		// earth
-		this.earth = this.game.add.sprite(this.game.world.centerX - 60, this.game.world.centerY - 45, 'earth');
+		this.earth = this.game.add.sprite(this.game.world.centerX - 80, this.game.world.centerY - 45, 'earth');
 		this.earth.width = 100;
 		this.earth.height = 100;
 		this.earth.anchor.setTo(0.5);
@@ -119,7 +119,7 @@ Elematix.GameState = {
 		this.earth.events.onInputDown.add(this.clickElement, this);
 
 		// air
-		this.air = this.game.add.sprite(this.game.world.centerX + 70, this.game.world.centerY - 45, 'air');
+		this.air = this.game.add.sprite(this.game.world.centerX + 50, this.game.world.centerY - 45, 'air');
 		this.air.width = 100;
 		this.air.height = 100;
 		this.air.anchor.setTo(0.5);
@@ -131,7 +131,7 @@ Elematix.GameState = {
 		this.selectedElement = [];
 
 		// submit button
-		this.submitButton = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY + 90, 'submitButton');
+		this.submitButton = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY + 80, 'submitButton');
 		this.submitButton.anchor.setTo(0.5);
 		this.submitButton.alpha = 0.4;
 		this.submitButton.events.onInputDown.add(this.submit, this);
