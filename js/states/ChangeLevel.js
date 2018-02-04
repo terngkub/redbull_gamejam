@@ -20,7 +20,7 @@ Elematix.ChangeLevelState = {
 
 	backToGame: function() {
 		// cleared game
-		this.LEVEL_NUMBER = 20;
+		this.LEVEL_NUMBER = 12;
 		if (this.currentLevel > this.LEVEL_NUMBER) {
 			this.state.start('Home', true, false, this.currentLevel, this.currentScore);
 		} else {

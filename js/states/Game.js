@@ -17,7 +17,6 @@ Elematix.GameState = {
 
 		// parse level data
 		this.levelData = JSON.parse(this.game.cache.getText('level' + this.currentLevel));
-		console.log(this.levelData);
 
 		// print current level
 		var levelStyle = {font: '40px Arial', align: 'right'}
@@ -34,11 +33,11 @@ Elematix.GameState = {
 		this.game.time.events.loop(Phaser.Timer.SECOND, this.showTime, this);
 
 		// print answer
-		var answerX = (this.levelData.size == 1) ? 470 : 600;
+		var answerX = (this.levelData.size == 1) ? 400 : 500;
 		var answerY = 270;
 		var answerStyle = {font: '45px Arial'}
 		this.answerText = this.game.add.text(answerX, answerY, '=  ' + this.levelData['answer'], answerStyle);
-		this.answerText.anchor.setTo(1, 0.5);
+		this.answerText.anchor.setTo(0, 0.5);
 
 		// print operator for 2 boxes
 		if (this.levelData.size == 2) {
@@ -65,7 +64,7 @@ Elematix.GameState = {
 		this.ruleData.forEach(function(element) {
 
 			// hide 3 rules for level 1 and 2
-			if (this.currentLevel > 2 || element.y == 640) {
+			if (this.currentLevel > 3 || element.y == 640) {
 
 				// left element
 				var element1 = this.rules.create(element.x - this.RULE_MARGIN, element.y, element.element1);
@@ -94,7 +93,6 @@ Elematix.GameState = {
 			this.createElementButtons(0, 40, 150);
 			this.createElementButtons(1, 300, 150);
 		}
-		console.log(this.elementButtons);
 
 		// create an array to stored selected elements
 		this.selectedElement = [[], []];
@@ -235,7 +233,6 @@ Elematix.GameState = {
 	submit: function() {
 
 		// calculate and check the answer
-		console.log(this.calculate());
 		if (this.calculate() == this.levelData.answer) {
 
 			// add score
@@ -264,10 +261,12 @@ Elematix.GameState = {
 				return (this.calculateBox(0) + this.calculateBox(1));
 			} else if (this.levelData.operator == '-') {
 				return (this.calculateBox(0) - this.calculateBox(1));
-			} else if (this.levelData.operator == '*') {
+			} else if (this.levelData.operator == 'x') {
 				return (this.calculateBox(0) * this.calculateBox(1));
-			} else if (this.levelData.operator == '/') {
+			} else if (this.levelData.operator == '/' && this.calculateBox(1) != 0) {
 				return (this.calculateBox(0) / this.calculateBox(1));
+			} else {
+				return (1000000);
 			}
 		}
 	},
@@ -296,20 +295,20 @@ Elematix.GameState = {
 		// do calculation based on each scenario
 		if (fire == 1) {
 			if (water == 1) {
-				return (this.levelData.value[0].fire - this.levelData.value[0].water);
+				return (this.levelData.value[index].fire - this.levelData.value[index].water);
 			} else if (earth == 1) {
-				return (this.levelData.value[0].fire * this.levelData.value[0].earth);
+				return (this.levelData.value[index].fire * this.levelData.value[index].earth);
 			} else if (air == 1) {
-				return (Math.pow(this.levelData.value[0].fire, this.levelData.value[0].air));
+				return (Math.pow(this.levelData.value[index].fire, this.levelData.value[index].air));
 			}
 		} else if (water == 1) {
 			if (earth == 1) {
-				return (this.levelData.value[0].water % this.levelData.value[0].earth);
+				return (this.levelData.value[index].water % this.levelData.value[index].earth);
 			} else if (air == 1) {
-				return (this.levelData.value[0].water / this.levelData.value[0].air);
+				return (this.levelData.value[index].water / this.levelData.value[index].air);
 			}
 		} else if (earth == 1 && air == 1) {
-			return (this.levelData.value[0].earth + this.levelData.value[0].air);
+			return (this.levelData.value[index].earth + this.levelData.value[index].air);
 		}
 	},
 

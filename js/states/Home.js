@@ -4,9 +4,8 @@ Elematix.HomeState = {
 	
 	init: function(level, score) {
 		// cleared game
-		this.LEVEL_NUMBER = 20
+		this.LEVEL_NUMBER = 12;
 		if (level && level > this.LEVEL_NUMBER) {
-			console.log("come here");
 			this.level = level;
 			this.titleMessage = 'Score: ' + score;
 			this.subtitleMessage = 'Great job, you cleared the game!!\nPlay again for a better score.';
@@ -29,8 +28,8 @@ Elematix.HomeState = {
 		this.titleText.anchor.setTo(0.5);
 
 		// subtitle
-		var subtitleStyle = {font: '16px Arial', align: 'center'};
-		this.subtitleText1 = this.game.add.text(this.game.world.centerX, 270, this.subtitleMessage, subtitleStyle);
+		var subtitleStyle = {font: '20px Arial', align: 'center'};
+		this.subtitleText1 = this.game.add.text(this.game.world.centerX, 280, this.subtitleMessage, subtitleStyle);
 		this.subtitleText1.anchor.setTo(0.5);
 
 		// instruction
