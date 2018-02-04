@@ -1,8 +1,13 @@
 {
-	"fire": 7,
-	"water": 14,
-	"earth": 5,
-	"air": 1,
+	"size": 1,
+	"value": [
+		{
+			"fire": 7,
+			"water": 14,
+			"earth": 5,
+			"air": 1
+		}
+	],
 	"answer": 7,
 	"time": 30
 }

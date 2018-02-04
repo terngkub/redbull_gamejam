@@ -1,8 +1,20 @@
 {
-	"fire": 5,
-	"water": 4,
-	"earth": 2,
-	"air": 2,
-	"answer": 2,
-	"time": 30
+	"size": 2,
+	"value": [
+		{
+			"fire": 8,
+			"water": 8,
+			"earth": 8,
+			"air": 8
+		},
+		{
+			"fire": 4,
+			"water": 2,
+			"earth": 1,
+			"air": 5
+		}
+	],
+	"operator": "x",
+	"answer": 32,
+	"time": 120
 }
