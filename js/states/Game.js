@@ -17,6 +17,7 @@ Elematix.GameState = {
 
 		// parse level data
 		this.levelData = JSON.parse(this.game.cache.getText('level' + this.currentLevel));
+		console.log(this.levelData);
 
 		// print current level
 		var levelStyle = {font: '40px Arial', align: 'right'}
@@ -32,16 +33,18 @@ Elematix.GameState = {
 		this.timeText.anchor.setTo(0.5);
 		this.game.time.events.loop(Phaser.Timer.SECOND, this.showTime, this);
 
-		// print element value
-		this.fireText = this.game.add.text(this.game.world.width * 0.36, 250, this.levelData['fire']);
-		this.waterText = this.game.add.text(this.game.world.width * 0.55, 250, this.levelData['water']);
-		this.earthText = this.game.add.text(this.game.world.width * 0.36, 405, this.levelData['earth']);
-		this.airText = this.game.add.text(this.game.world.width * 0.57, 405, this.levelData['air']);
-
 		// print answer
+		var answerX = (this.levelData.size == 1) ? 470 : 600;
+		var answerY = 270;
 		var answerStyle = {font: '45px Arial'}
-		this.answerText = this.game.add.text(this.game.world.centerX + 180, this.game.world.centerY - 95, '=  ' + this.levelData['answer'], answerStyle);
-		this.answerText.anchor.setTo(0.5);
+		this.answerText = this.game.add.text(answerX, answerY, '=  ' + this.levelData['answer'], answerStyle);
+		this.answerText.anchor.setTo(1, 0.5);
+
+		// print operator for 2 boxes
+		if (this.levelData.size == 2) {
+			this.operatorText = this.game.add.text(260, answerY, this.levelData.operator, answerStyle);
+			this.operatorText.anchor.setTo(0.5);
+		}
 
 		// add instruction
 		var instructionStyle = {font: '22px Arial', align: 'center'};
@@ -83,55 +86,18 @@ Elematix.GameState = {
 			}
 		}, this);
 
-		/*
-		 * show element buttons for fire, water, earth and air
-		 * the explanation of each line below:
-		 *
-		 * show image
-		 * set image anchor point
-		 * set image opacity
-		 * enable image to receive input
-		 * call function when click on the image
-		 */
-
-		// fire
-		this.fire = this.game.add.sprite(this.game.world.centerX - 80, this.game.world.centerY - 200, 'fire');
-		this.fire.width = 100;
-		this.fire.height = 100;
-		this.fire.anchor.setTo(0.5);
-		this.fire.alpha = 0.4;
-		this.fire.inputEnabled = true;
-		this.fire.events.onInputDown.add(this.clickElement, this);
-
-		// water
-		this.water = this.game.add.sprite(this.game.world.centerX + 50, this.game.world.centerY - 200, 'water');
-		this.water.width = 100;
-		this.water.height = 100;
-		this.water.anchor.setTo(0.5);
-		this.water.alpha = 0.4;
-		this.water.inputEnabled = true;
-		this.water.events.onInputDown.add(this.clickElement, this);
-
-		// earth
-		this.earth = this.game.add.sprite(this.game.world.centerX - 80, this.game.world.centerY - 45, 'earth');
-		this.earth.width = 100;
-		this.earth.height = 100;
-		this.earth.anchor.setTo(0.5);
-		this.earth.alpha = 0.4;
-		this.earth.inputEnabled = true;
-		this.earth.events.onInputDown.add(this.clickElement, this);
-
-		// air
-		this.air = this.game.add.sprite(this.game.world.centerX + 50, this.game.world.centerY - 45, 'air');
-		this.air.width = 100;
-		this.air.height = 100;
-		this.air.anchor.setTo(0.5);
-		this.air.alpha = 0.4;
-		this.air.inputEnabled = true;
-		this.air.events.onInputDown.add(this.clickElement, this);
+		// element buttons
+		this.elementButtons = [{}, {}];
+		if (this.levelData.size == 1) {
+			this.createElementButtons(0, 150, 150);
+		} else {
+			this.createElementButtons(0, 40, 150);
+			this.createElementButtons(1, 300, 150);
+		}
+		console.log(this.elementButtons);
 
 		// create an array to stored selected elements
-		this.selectedElement = [];
+		this.selectedElement = [[], []];
 
 		// submit button
 		this.submitButton = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY + 80, 'submitButton');
@@ -151,20 +117,97 @@ Elematix.GameState = {
 		}
 	},
 
-	clickElement: function(element) {
+	createRectangle: function(x, y, sizeX, sizeY) {
+		const MARGIN = 5;
+		var graphics = this.game.add.graphics();
+		graphics.beginFill(0x000000, 0.1);
+		graphics.drawRect(x - MARGIN, y - MARGIN, sizeX + 2 * MARGIN, sizeY + 2 * MARGIN);
+		graphics.endFill();
+	},
+
+	createElementButtons: function(index, x, y) {
+
+		/*
+		 * show element buttons for fire, water, earth and air
+		 * the explanation of each line below:
+		 *
+		 * show image
+		 * set image anchor point
+		 * set image opacity
+		 * enable image to receive input
+		 * call function when click on the image
+		 */
+
+		this.SIZE = 80;
+		this.MARGIN_X = 100;
+		this.MARGIN_Y = 130;
+		this.ALPHA = 0.4;
+
+		// fire
+		this.createRectangle(x, y, this.SIZE, this.SIZE + 30);
+		this.elementButtons[index].fire = this.game.add.sprite(x, y, 'fire');
+		this.elementButtons[index].fire.index = index;
+		this.elementButtons[index].fire.width = this.SIZE;
+		this.elementButtons[index].fire.height = this.SIZE;
+		this.elementButtons[index].fire.alpha = this.ALPHA;
+		this.elementButtons[index].fire.inputEnabled = true;
+		this.elementButtons[index].fire.events.onInputDown.add(this.clickElement, this, index);
+
+		// water
+		this.createRectangle(x + this.MARGIN_X, y, this.SIZE, this.SIZE + 30);
+		this.elementButtons[index].water = this.game.add.sprite(x + this.MARGIN_X, y, 'water');
+		this.elementButtons[index].water.index = index;
+		this.elementButtons[index].water.width = this.SIZE;
+		this.elementButtons[index].water.height = this.SIZE;
+		this.elementButtons[index].water.alpha = this.ALPHA;
+		this.elementButtons[index].water.inputEnabled = true;
+		this.elementButtons[index].water.events.onInputDown.add(this.clickElement, this, index);
+
+		// earth
+		this.createRectangle(x, y + this.MARGIN_Y, this.SIZE, this.SIZE + 30);
+		this.elementButtons[index].earth = this.game.add.sprite(x, y + this.MARGIN_Y, 'earth');
+		this.elementButtons[index].earth.index = index;
+		this.elementButtons[index].earth.width = this.SIZE;
+		this.elementButtons[index].earth.height = this.SIZE;
+		this.elementButtons[index].earth.alpha = this.ALPHA;
+		this.elementButtons[index].earth.inputEnabled = true;
+		this.elementButtons[index].earth.events.onInputDown.add(this.clickElement, this, index);
+
+		// air
+		this.createRectangle(x + this.MARGIN_X, y + this.MARGIN_Y, this.SIZE, this.SIZE + 30);
+		this.elementButtons[index].air = this.game.add.sprite(x + this.MARGIN_X, y + this.MARGIN_Y, 'air');
+		this.elementButtons[index].air.index = index;
+		this.elementButtons[index].air.width = this.SIZE;
+		this.elementButtons[index].air.height = this.SIZE;
+		this.elementButtons[index].air.alpha = this.ALPHA;
+		this.elementButtons[index].air.inputEnabled = true;
+		this.elementButtons[index].air.events.onInputDown.add(this.clickElement, this);
+
+		// print element value
+		this.fireText = this.game.add.text(x + this.SIZE/2, y + this.SIZE + 20, this.levelData.value[index].fire);
+		this.fireText.anchor.setTo(0.5);
+		this.waterText = this.game.add.text(x + this.MARGIN_X + this.SIZE/2, y + this.SIZE + 20, this.levelData.value[index].water);
+		this.waterText.anchor.setTo(0.5);
+		this.earthText = this.game.add.text(x + this.SIZE/2, y + this.MARGIN_Y + this.SIZE + 20, this.levelData.value[index].earth);
+		this.earthText.anchor.setTo(0.5);
+		this.airText = this.game.add.text(x + this.MARGIN_X + this.SIZE/2, y + this.MARGIN_Y + this.SIZE + 20, this.levelData.value[index].air);
+		this.airText.anchor.setTo(0.5);
+	},
+
+	clickElement: function(element, index) {
 
 		// if element isn't selected this will return -1
-		var elementIndex = this.selectedElement.indexOf(element);
+		var elementIndex = this.selectedElement[element.index].indexOf(element);
 
 		// if element isn't selected, add it to the array
 		// if it's selected, remove from the array
 		if (elementIndex == -1) {
 			element.alpha = 1;
-			this.selectedElement.push(element);
+			this.selectedElement[element.index].push(element);
 			this.checkValidSubmit();
 		} else {
 			element.alpha = 0.4;
-			this.selectedElement.splice(elementIndex, 1);
+			this.selectedElement[element.index].splice(elementIndex, 1);
 			this.checkValidSubmit();
 		}
 	},
@@ -172,18 +215,27 @@ Elematix.GameState = {
 	checkValidSubmit: function() {
 
 		// if there are 2 selected element enable the submit button
-		if (this.selectedElement.length == 2) {
+
+		var valid = 0;
+		if ((this.levelData.size == 1 && this.selectedElement[0].length == 2) ||
+				(this.levelData.size == 2 && this.selectedElement[0].length == 2 && this.selectedElement[1].length == 2)) {
+			valid = 1;
+		}
+		
+		if (valid) {
 			this.submitButton.alpha = 1;
 			this.submitButton.inputEnabled = true;
 		} else {
 			this.submitButton.alpha = 0.4;
 			this.submitButton.inputEnabled = false;
 		}
+		
 	},
 
 	submit: function() {
 
 		// calculate and check the answer
+		console.log(this.calculate());
 		if (this.calculate() == this.levelData.answer) {
 
 			// add score
@@ -205,6 +257,22 @@ Elematix.GameState = {
 	},
 
 	calculate: function() {
+		if (this.levelData.size == 1) {
+			return this.calculateBox(0);
+		} else {
+			if (this.levelData.operator == '+') {
+				return (this.calculateBox(0) + this.calculateBox(1));
+			} else if (this.levelData.operator == '-') {
+				return (this.calculateBox(0) - this.calculateBox(1));
+			} else if (this.levelData.operator == '*') {
+				return (this.calculateBox(0) * this.calculateBox(1));
+			} else if (this.levelData.operator == '/') {
+				return (this.calculateBox(0) / this.calculateBox(1));
+			}
+		}
+	},
+
+	calculateBox: function(index) {
 
 		// create variable to store selected elements
 		var fire = 0;
@@ -213,7 +281,7 @@ Elematix.GameState = {
 		var air = 0;
 
 		// find which elements are selected
-		this.selectedElement.forEach(function(element) {
+		this.selectedElement[index].forEach(function(element) {
 			if (element.key == 'fire') {
 				fire = 1;
 			} else if (element.key == 'water') {
@@ -228,20 +296,20 @@ Elematix.GameState = {
 		// do calculation based on each scenario
 		if (fire == 1) {
 			if (water == 1) {
-				return (this.levelData['fire'] - this.levelData['water']);
+				return (this.levelData.value[0].fire - this.levelData.value[0].water);
 			} else if (earth == 1) {
-				return (this.levelData['fire'] * this.levelData['earth']);
+				return (this.levelData.value[0].fire * this.levelData.value[0].earth);
 			} else if (air == 1) {
-				return (Math.pow(this.levelData['fire'], this.levelData['air']));
+				return (Math.pow(this.levelData.value[0].fire, this.levelData.value[0].air));
 			}
 		} else if (water == 1) {
 			if (earth == 1) {
-				return (this.levelData['water'] % this.levelData['earth']);
+				return (this.levelData.value[0].water % this.levelData.value[0].earth);
 			} else if (air == 1) {
-				return (this.levelData['water'] / this.levelData['air']);
+				return (this.levelData.value[0].water / this.levelData.value[0].air);
 			}
 		} else if (earth == 1 && air == 1) {
-			return (this.levelData['earth'] + this.levelData['air']);
+			return (this.levelData.value[0].earth + this.levelData.value[0].air);
 		}
 	},
 
