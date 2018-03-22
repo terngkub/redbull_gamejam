@@ -9,13 +9,14 @@ Hackathon - Redbull Game Jam
 * The given theme of this hackathon is "four elements" (fire, water, earth and wind).
 
 ![elematix1](/screenshot/screenshot1.png?raw=true)
-![elematix2](/screenshot/screenshot2.png?raw=true)
 
 ### About the game
 * It's a math quiz game with a twist of 4 elements.
 * The idea is that each elements interact with each other.
 * For example, water puts out (or reduce) fire so if you choose them the answer will be (Fire's value - Water's value).
 * The game name "Elematix" comes from "Elements" + "Mathematics" and a little "X" at the end to make it to look awesome.
+
+![elematix2](/screenshot/screenshot2.png?raw=true)
 
 ### How to run the game
 * Clone or download the repo.
